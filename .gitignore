@@ -1,0 +1,4 @@
+#kubernetes secrets
+app-secret.yaml
+#envirenment variable
+.env
