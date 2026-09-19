@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: database
+spec:
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+        - name: database
+          image: postgres:16-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: DB_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: DB_PASSWORD
+            - name: POSTGRES_DB
+              value: cloudapp
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          volumeMounts: 
+            - name: database-storage
+              mountPath: /var/lib/postgresql/data/pgdata
+      volumes:
+         - name: database-storage
+           persistentVolumeClaim:
+             claimName: database-pvc
+
