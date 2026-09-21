@@ -16,9 +16,10 @@ spec:
     spec:
       containers:
         - name: backend
-          image: nginx:alpine
+          image: cloud-app-backend:1.3
+          imagePullPolicy: Never
           ports:
-            - containerPort: 80
+            - containerPort: 5000
           env:
             - name: APP_NAME
               valueFrom:
@@ -30,3 +31,32 @@ spec:
                 configMapKeyRef:
                   name: app-config
                   key: ENVIRONMENT
+            - name: DB_HOST
+              value: database-service
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: cloudapp
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: DB_PASSWORD
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+
