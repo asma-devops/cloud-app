@@ -15,7 +15,7 @@ spec:
       spec:
         containers:
           - name: frontend
-           image: cloud-app-frontend:1.0
-           imagePullPolicy: Never
+            image: cloud-app-frontend:1.1
+            imagePullPolicy: Never
             ports:
               - containerPort: 80
