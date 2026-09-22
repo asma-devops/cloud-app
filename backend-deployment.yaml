@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: cloud-app-backend:1.3
+          image: cloud-app-backend:1.4
           imagePullPolicy: Never
           ports:
             - containerPort: 5000

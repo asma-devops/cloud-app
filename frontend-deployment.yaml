@@ -15,6 +15,7 @@ spec:
       spec:
         containers:
           - name: frontend
-            image: nginx:alpine
+           image: cloud-app-frontend:1.0
+           imagePullPolicy: Never
             ports:
               - containerPort: 80
